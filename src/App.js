@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
-
 function App() {
+
+  // React-component
+  const TodoList = () => {
+    return (
+      <ul>
+        <li>Learn React</li>
+        <li>Build Awesome App</li>
+      </ul>
+    );
+  };
+
+  const AppHeader = () => {
+    return <h1>My Todo List</h1>;
+
+  };
+
+  const SearchPanel = () => {
+    return <input placeholder='search' />;
+
+  };
+
+  const App = () => {
+    return (
+      <div>
+        <AppHeader />
+        <SearchPanel />
+        <TodoList />
+      </div>
+    )
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <App />
   );
 }
 
