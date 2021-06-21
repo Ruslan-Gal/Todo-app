@@ -2,10 +2,13 @@ function App() {
 
   // React-component
   const TodoList = () => {
+
+    const items = ['Learn React', 'Build Awesome App'];
+
     return (
       <ul>
-        <li>Learn React</li>
-        <li>Build Awesome App</li>
+        <li>{items[0]}</li>
+        <li>{items[1]}</li>
       </ul>
     );
   };
@@ -16,13 +19,29 @@ function App() {
   };
 
   const SearchPanel = () => {
-    return <input placeholder='search' />;
+
+    const searchText = 'Type here to search';
+
+    const searchStyle = {
+      fontSize: '20px'
+    };
+
+    return <input
+      style={searchStyle}
+      placeholder={searchText}
+      className='foo'
+      // disabled={true} = disabled
+      htmlFor='for html element...' />;
 
   };
 
   const App = () => {
+
+    const value = '<script>alert("")</script>'
+
     return (
       <div>
+        {value}
         <AppHeader />
         <SearchPanel />
         <TodoList />
