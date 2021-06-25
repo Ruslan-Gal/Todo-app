@@ -1,5 +1,6 @@
-import React from 'react'
-import TodoListItem from './todo-list-item'
+import React from 'react';
+import TodoListItem from './todo-list-item';
+import './todo-list.css';
 
 const TodoList = ({ todos }) => {
 
@@ -7,22 +8,18 @@ const TodoList = ({ todos }) => {
 	// для каждого item создаем отдельный JSX - эл-т
 	const elements = todos.map((item) => {
 		// console.log(item)
+
+		const { id, ...itemProps } = item;
+
 		return (
-			<li>
-				{/* <TodoListItem
-					label={item.label}
-					important={item.important} /> */}
-
-				{/* equal */}
-				<TodoListItem {...item} />
-
+			<li key={id} className='list-group-item'>
+				<TodoListItem {...itemProps} />
 			</li>
 		);
-
 	});
 
 	return (
-		<ul>
+		<ul className='list-group todo-list'>
 			{elements}
 		</ul>
 	);
