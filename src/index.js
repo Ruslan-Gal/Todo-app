@@ -13,84 +13,77 @@ class App extends Component {
   maxId = 100;
 
   state = {
-    todoData: [
-      this.createTodoItem('Drink Coffee'),
-      this.createTodoItem('Make Awesome App'),
-      this.createTodoItem('Have a lunch'),
+    items: [
+      this.createItem('Learn React'),
+      this.createItem('Drink Coffee'),
+      this.createItem('Make Awesome App'),
     ],
-    term: '',
     filter: 'all', // all, active, done
+    search: '',
   };
 
-  createTodoItem(label) {
-    return {
-      label: label,
-      important: false,
-      done: false,
-      id: this.maxId++,
-    };
-  }
-
-  deleteItem = (id) => {
-    this.setState(({ todoData }) => {
-      const idx = todoData.findIndex((el) => el.id === id);
-
-      const newArray = [...todoData.slice(0, idx), ...todoData.slice(idx + 1)];
-
-      return {
-        todoData: newArray,
-      };
+  onItemAdded = (label) => {
+    this.setState((state) => {
+      const item = this.createItem(label);
+      return { items: [...state.items, item] };
     });
   };
 
-  addItem = (label) => {
-    const newItem = this.createTodoItem(label);
+  onItemDelete = (id) => {
+    this.setState((state) => {
+      const idx = state.items.findIndex((el) => el.id === id);
 
-    this.setState(({ todoData }) => {
-      const newArray = [...todoData, newItem];
-      return {
-        todoData: newArray,
-      };
+      const items = [
+        ...state.items.slice(0, idx),
+        ...state.items.slice(idx + 1),
+      ];
+
+      return { items };
     });
   };
 
-  toggleProperty(arr, id, propName) {
-    const idx = arr.findIndex((el) => el.id === id);
-
-    // 1. update object
+  toggleProperty = (arr, id, propName) => {
+    const idx = arr.findIndex((item) => item.id === id);
     const oldItem = arr[idx];
-    const newItem = { ...oldItem, [propName]: !oldItem[propName] };
+    const value = !oldItem[propName];
 
-    // 2. construct new array
-    return [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)];
-  }
+    const item = { ...oldItem, [propName]: value };
+
+    return [...arr.slice(0, idx), item, ...arr.slice(idx + 1)];
+  };
 
   onToggleImportant = (id) => {
-    this.setState(({ todoData }) => {
-      return {
-        todoData: this.toggleProperty(todoData, id, 'important'),
-      };
+    this.setState((state) => {
+      const items = this.toggleProperty(state.items, id, 'important');
+      return { items };
     });
   };
 
   onToggleDone = (id) => {
-    this.setState(({ todoData }) => {
-      return {
-        todoData: this.toggleProperty(todoData, id, 'done'),
-      };
+    this.setState((state) => {
+      const items = this.toggleProperty(state.items, id, 'done');
+      return { items };
     });
   };
 
-  search = (items, term) => {
-    if (term.length === 0) {
-      return items;
-    }
-    return items.filter((item) => {
-      return item.label.toLowerCase().indexOf(term.toLowerCase()) > -1;
-    });
+  onFilterChange = (filter) => {
+    this.setState({ filter });
   };
 
-  filter = (items, filter) => {
+  onSearchChange = (search) => {
+    this.setState({ search });
+  };
+
+  createItem(label) {
+    return {
+      id: ++this.maxId,
+      label: label,
+      important: false,
+      done: false,
+    };
+  }
+
+  filterItems(items, filter) {
     switch (filter) {
       case 'all':
         return items;
@@ -101,23 +94,27 @@ class App extends Component {
       default:
         return items;
     }
-  };
+  }
 
-  onSearchChange = (term) => {
-    this.setState({ term });
-  };
-
-  onFilterChange = (filter) => {
-    this.setState({ filter });
-  };
+  searchItems(items, search) {
+    if (search.length === 0) {
+      return items;
+    }
+    return items.filter((item) => {
+      return item.label.toLowerCase().indexOf(search.toLowerCase()) > -1;
+    });
+  }
 
   render() {
-    const { todoData, term, filter } = this.state;
+    const { items, search, filter } = this.state;
 
-    const visibleItems = this.filter(this.search(todoData, term), filter);
+    const doneCount = items.filter((el) => el.done).length;
+    const todoCount = items.length - doneCount;
 
-    const doneCount = todoData.filter((el) => el.done).length;
-    const todoCount = todoData.length - doneCount;
+    const visibleItems = this.filterItems(
+      this.searchItems(items, search),
+      filter
+    );
 
     return (
       <div className='todo-app'>
@@ -131,13 +128,13 @@ class App extends Component {
         </div>
 
         <TodoList
-          todos={visibleItems}
-          onDeleted={this.deleteItem}
+          items={visibleItems}
+          onItemDelete={this.onItemDelete}
           onToggleImportant={this.onToggleImportant}
           onToggleDone={this.onToggleDone}
         />
 
-        <ItemAddForm onItemAdded={this.addItem} />
+        <ItemAddForm onItemAdded={this.onItemAdded} />
       </div>
     );
   }

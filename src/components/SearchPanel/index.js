@@ -6,10 +6,12 @@ export default class SearchPanel extends Component {
     term: '',
   };
 
-  onSearchChange = (e) => {
+  onTermChange = (e) => {
+    const { onSearchChange = () => {} } = this.props;
     const term = e.target.value;
     this.setState({ term });
-    this.props.onSearchChange(term);
+
+    onSearchChange(term);
   };
 
   render() {
@@ -19,7 +21,7 @@ export default class SearchPanel extends Component {
         className='form-control search-input'
         placeholder='type to search'
         value={this.state.term}
-        onChange={this.onSearchChange}
+        onChange={this.onTermChange}
       />
     );
   }
