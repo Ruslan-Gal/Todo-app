@@ -23,15 +23,17 @@ export default class ItemAddForm extends Component {
 
   render() {
     return (
-      <form className='item-add-form d-flex' onSubmit={this.onSubmit}>
+      <form className='bottom-panel d-flex' onSubmit={this.onSubmit}>
         <input
           type='text'
-          className='form-control'
+          className='form-control new-todo-label'
           onChange={this.onLabelChange}
           placeholder='What needs to be done?'
           value={this.state.label}
         />
-        <button className='btn btn-outline-secondary'>Add Item</button>
+        <button type='submit' className='btn btn-outline-secondary'>
+          Add
+        </button>
       </form>
     );
   }

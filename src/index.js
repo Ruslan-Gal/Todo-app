@@ -119,7 +119,7 @@ class App extends Component {
     return (
       <div className='todo-app'>
         <AppHeader toDo={todoCount} done={doneCount} />
-        <div className='top-panel d-flex'>
+        <div className='search-panel d-flex'>
           <SearchPanel onSearchChange={this.onSearchChange} />
           <ItemStatusFilter
             filter={filter}
