@@ -10,7 +10,7 @@ export default class ItemStatusFilter extends Component {
           All
         </button>
         <button type='button' className='btn btn-outline-secondary'>
-          All
+          Active
         </button>
         <button type='button' className='btn btn-outline-secondary'>
           Done
