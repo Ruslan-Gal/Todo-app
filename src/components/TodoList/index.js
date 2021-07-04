@@ -1,6 +1,6 @@
 import React from 'react';
-import TodoListItem from '../todo-list-item';
-import './todo-list.css';
+import TodoListItem from '../TodoListItem';
+import './style.css';
 
 const TodoList = ({ todos, onDeleted, onToggleImportant, onToggleDone }) => {
   // Array of JSX-elements
