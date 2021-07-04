@@ -3,45 +3,30 @@ import React, { Component } from 'react';
 import './style.css';
 
 export default class ItemStatusFilter extends Component {
-  state = {
-    filter: 'all',
-  };
-
-  onFilterChange = (e, filter) => {
-    this.setState({ filter });
-    this.props.onFilterChange(filter);
-    document.querySelectorAll('.btn-filter').forEach((btn) => {
-      btn.classList.remove('btn-info');
-      btn.classList.add('btn-outline-secondary');
-    });
-    e.target.classList.add('btn-info');
-  };
+  buttons = [
+    { name: 'all', label: 'All' },
+    { name: 'active', label: 'Active' },
+    { name: 'done', label: 'Done' },
+  ];
 
   render() {
-    return (
-      <div className='btn-group'>
+    const { filter, onFilterChange } = this.props;
+
+    const buttons = this.buttons.map(({ name, label }) => {
+      const isActive = filter === name;
+      const clazz = isActive ? 'btn-info' : 'btn-outline-secondary';
+      return (
         <button
           type='button'
-          className='btn btn-info btn-filter'
-          onClick={(e) => this.onFilterChange(e, 'all')}
+          className={`btn ${clazz}`}
+          key={name}
+          onClick={() => onFilterChange(name)}
         >
-          All
+          {label}
         </button>
-        <button
-          type='button'
-          className='btn btn-outline-secondary btn-filter'
-          onClick={(e) => this.onFilterChange(e, 'active')}
-        >
-          Active
-        </button>
-        <button
-          type='button'
-          className='btn btn-outline-secondary btn-filter'
-          onClick={(e) => this.onFilterChange(e, 'done')}
-        >
-          Done
-        </button>
-      </div>
-    );
+      );
+    });
+
+    return <div className='btn-group'>{buttons}</div>;
   }
 }
